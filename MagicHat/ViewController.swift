@@ -149,7 +149,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     @IBAction func magicTap(_ sender: Any) {
-        if ballsManager.hideBallsInsideHat(magicHat: magicHat) {
+        if ballsManager.hideShowBallsInsideHat(magicHat: magicHat, removeAfterHide: false) {
             showMessage("Magic!")
         }
     }

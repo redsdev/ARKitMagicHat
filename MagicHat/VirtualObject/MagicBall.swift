@@ -29,13 +29,15 @@ class MagicBall: BaseVirtualObject {
         _ball?.physicsBody?.applyForce( SCNVector3(self.worldFront.x * force, self.worldFront.y * force, self.worldFront.z * force), asImpulse: true)
     }
     
-    public func hideAndRemoveAnimation()
+    public func hideShowAnimation(hideBall hide: Bool, removeBall remove: Bool)
     {
         SCNTransaction.begin()
-        _ball?.opacity = 0
+        _ball?.opacity = hide ? 0 : 1
         SCNTransaction.animationDuration = 2
-        SCNTransaction.completionBlock = {
-            self.removeFromParentNode()
+        if remove {
+            SCNTransaction.completionBlock = {
+                self.removeFromParentNode()
+            }
         }
         SCNTransaction.commit()
     }

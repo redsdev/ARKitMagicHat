@@ -12,6 +12,7 @@ import ARKit
 class MagicBallsManager: NSObject {
     
     var arrayBalls = [MagicBall]()
+    var ballHidden = false
     
     public func createAndThrowBall(sceneView scene:ARSCNView, transformCamera transform: matrix_float4x4) {
         let mat = SCNMatrix4(transform)
@@ -26,28 +27,32 @@ class MagicBallsManager: NSObject {
         ball.throwBall()
     }
     
-    public func hideBallsInsideHat(magicHat hat: MagicHat?) -> Bool
+    public func hideShowBallsInsideHat(magicHat hat: MagicHat?, removeAfterHide remove: Bool) -> Bool
     {
         if hat == nil {
             return false
         }
         
-        var removeArray = [Int]()
+        ballHidden = !ballHidden
+        
+        var ballsInsideHatArray = [Int]()
         arrayBalls.forEach { (ball) in
             if hat!.containBall(ball) {
-                ball.hideAndRemoveAnimation()
-                removeArray.append(arrayBalls.index(of: ball)!)
+                ball.hideShowAnimation(hideBall: ballHidden, removeBall: remove)
+                ballsInsideHatArray.append(arrayBalls.index(of: ball)!)
             }
         }
 
-        removeArray.sort(by: { (a, b) -> Bool in
-            return a>b
-        })
-        
-        removeArray.forEach { (idx) in
-            arrayBalls.remove(at: idx)
+        if remove {
+            ballsInsideHatArray.sort(by: { (a, b) -> Bool in
+                return a>b
+            })
+            
+            ballsInsideHatArray.forEach { (idx) in
+                arrayBalls.remove(at: idx)
+            }
         }
         
-        return removeArray.count > 0
+        return ballsInsideHatArray.count > 0
     }
 }
