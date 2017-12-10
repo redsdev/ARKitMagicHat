@@ -28,8 +28,15 @@ class MagicHat: BaseVirtualObject {
         if let boundingBox = _innerTube?.boundingBox {
             let ballPos = ball.getBallWorldCoordinatePos()
             
-            let minBB = _innerTube!.convertPosition(boundingBox.min, to: nil)
-            let maxBB = _innerTube!.convertPosition(boundingBox.max, to: nil)
+            let tubeSize = SCNVector3(boundingBox.max.x - boundingBox.min.x,
+                                      boundingBox.max.y - boundingBox.min.y,
+                                      boundingBox.max.z - boundingBox.min.z)
+            let minBB = SCNVector3Make(_innerTube!.presentation.worldPosition.x - tubeSize.x/2,
+                                       _innerTube!.presentation.worldPosition.y - tubeSize.y/2,
+                                       _innerTube!.presentation.worldPosition.z - tubeSize.z/2)
+            let maxBB = SCNVector3Make(_innerTube!.presentation.worldPosition.x + tubeSize.x/2,
+                                       _innerTube!.presentation.worldPosition.y + tubeSize.y/2,
+                                       _innerTube!.presentation.worldPosition.z + tubeSize.z/2)
             
             return
                 ballPos!.x >= minBB.x &&

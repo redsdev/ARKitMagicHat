@@ -14,7 +14,7 @@ extension ViewController {
         DispatchQueue.main.async {
             self.labelMessage.text = message
             
-            if (self.timerMessage != nil && !self.timerMessage!.isValid) {
+            if (self._timerMessage != nil && !self._timerMessage!.isValid) {
                 self.viewMessage.isHidden = false
                 self.viewMessage.alpha = 0
                 UIView.animate(withDuration: 0.2) {
@@ -22,11 +22,11 @@ extension ViewController {
                 }
             }
             
-            if self.timerMessage != nil {
-                self.timerMessage?.invalidate()
+            if self._timerMessage != nil {
+                self._timerMessage?.invalidate()
             }
             
-            self.timerMessage = Timer.scheduledTimer(withTimeInterval: 4, repeats: false, block: { (timer) in
+            self._timerMessage = Timer.scheduledTimer(withTimeInterval: 4, repeats: false, block: { (timer) in
                 self.hideMessage()
             })
         }

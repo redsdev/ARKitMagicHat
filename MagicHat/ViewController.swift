@@ -20,10 +20,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet var viewMessage: UIView!
     @IBOutlet var labelMessage: UILabel!
 
-    let omniLight = SCNLight()
-    let ambientLight = SCNLight()
-    let ballsManager = MagicBallsManager()
-    var timerMessage: Timer?
+    let _omniLight = SCNLight()
+    let _ambientLight = SCNLight()
+    let _ballsManager = MagicBallsManager()
+    var _timerMessage: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,16 +82,16 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.automaticallyUpdatesLighting = false
         sceneView.antialiasingMode = .multisampling4X
         
-        omniLight.type = .omni
-        omniLight.color = UIColor.white
+        _omniLight.type = .omni
+        _omniLight.color = UIColor.white
         let omniLightNode = SCNNode()
-        omniLightNode.light = omniLight
+        omniLightNode.light = _omniLight
         omniLightNode.position = SCNVector3(x: -30, y: 30, z: 60)
         
-        ambientLight.type = .ambient
-        ambientLight.intensity = 40
+        _ambientLight.type = .ambient
+        _ambientLight.intensity = 40
         let nodeAmbinetLight = SCNNode()
-        nodeAmbinetLight.light = ambientLight
+        nodeAmbinetLight.light = _ambientLight
         
         sceneView.scene.rootNode.addChildNode(omniLightNode)
         sceneView.scene.rootNode.addChildNode(nodeAmbinetLight)
@@ -118,7 +118,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         if let lightEstimate = sceneView.session.currentFrame?.lightEstimate {
-            omniLight.intensity = lightEstimate.ambientIntensity
+            _omniLight.intensity = lightEstimate.ambientIntensity
         }
     }
     
@@ -144,12 +144,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let camera = sceneView.session.currentFrame?.camera
         if let cameraTransform = camera?.transform {
-            ballsManager.createAndThrowBall(sceneView: self.sceneView, transformCamera: cameraTransform)
+            _ballsManager.createAndThrowBall(sceneView: self.sceneView, transformCamera: cameraTransform)
         }
     }
     
     @IBAction func magicTap(_ sender: Any) {
-        if ballsManager.hideShowBallsInsideHat(magicHat: magicHat, removeAfterHide: false) {
+        if _ballsManager.hideShowBallsInsideHat(magicHat: magicHat, removeAfterHide: false) {
             showMessage("Magic!")
         }
     }

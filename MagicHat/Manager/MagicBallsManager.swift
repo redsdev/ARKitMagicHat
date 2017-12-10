@@ -11,15 +11,15 @@ import ARKit
 
 class MagicBallsManager: NSObject {
     
-    var arrayBalls = [MagicBall]()
-    var ballHidden = false
+    var _arrayBalls = [MagicBall]()
+    var _ballHidden = false
     
     public func createAndThrowBall(sceneView scene:ARSCNView, transformCamera transform: matrix_float4x4) {
         let mat = SCNMatrix4(transform)
         let pos = SCNVector3(mat.m41, mat.m42, mat.m43)
         
         let ball = MagicBall(withPosition: pos)
-        arrayBalls.append(ball)
+        _arrayBalls.append(ball)
         scene.scene.rootNode.addChildNode(ball)
 
         ball.simdTransform = transform
@@ -33,13 +33,13 @@ class MagicBallsManager: NSObject {
             return false
         }
         
-        ballHidden = !ballHidden
+        _ballHidden = !_ballHidden
         
         var ballsInsideHatArray = [Int]()
-        arrayBalls.forEach { (ball) in
+        _arrayBalls.forEach { (ball) in
             if hat!.containBall(ball) {
-                ball.hideShowAnimation(hideBall: ballHidden, removeBall: remove)
-                ballsInsideHatArray.append(arrayBalls.index(of: ball)!)
+                ball.hideShowAnimation(hideBall: _ballHidden, removeBall: remove)
+                ballsInsideHatArray.append(_arrayBalls.index(of: ball)!)
             }
         }
 
@@ -49,7 +49,7 @@ class MagicBallsManager: NSObject {
             })
             
             ballsInsideHatArray.forEach { (idx) in
-                arrayBalls.remove(at: idx)
+                _arrayBalls.remove(at: idx)
             }
         }
         

@@ -31,12 +31,20 @@ class MagicBall: BaseVirtualObject {
     
     public func hideShowAnimation(hideBall hide: Bool, removeBall remove: Bool)
     {
+        if !hide {
+            _ball?.isHidden = false
+        }
+        
         SCNTransaction.begin()
         _ball?.opacity = hide ? 0 : 1
         SCNTransaction.animationDuration = 2
-        if remove {
-            SCNTransaction.completionBlock = {
+        SCNTransaction.completionBlock = {
+            if hide {
+                self._ball?.isHidden = true
+            }
+            if remove {
                 self.removeFromParentNode()
+                
             }
         }
         SCNTransaction.commit()
